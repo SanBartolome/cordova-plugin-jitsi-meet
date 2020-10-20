@@ -24,6 +24,7 @@ import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetActivityDelegate;
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface;
+import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import android.view.View;
 
 import org.apache.cordova.CordovaWebView;
@@ -102,7 +103,7 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
     }
   }
 
-  private void loadURL(final String url, final String key, final CallbackContext callbackContext) {
+  private void loadURL(final String url, final String key, final String subject, final String displayName, final CallbackContext callbackContext) {
     Log.e(TAG, "loadURL called : "+url);
     
     cordova.getActivity().runOnUiThread(new Runnable() {
@@ -117,10 +118,14 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
             e.printStackTrace();
             throw new RuntimeException("Invalid server URL!");
         }
-        
+        JitsiMeetUserInfo user = new JitsiMeetUserInfo();
+        user.setDisplayName(displayName);
         JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()          
           .setRoom(url)
-          .setSubject(" ")
+          .setSubject(subject)
+          .setUserInfo(user)
+          .setAudioMuted(true)
+          .setVideoMuted(true)
           .setFeatureFlag("chat.enabled", false)
           .setFeatureFlag("invite.enabled", false)          
           .setFeatureFlag("calendar.enabled", false)
