@@ -53,7 +53,9 @@ public class JitsiPlugin extends CordovaPlugin implements JitsiMeetActivityInter
     if (action.equals("loadURL")) {
       String url = args.getString(0);
       String key = args.getString(1);
-      this.loadURL(url, key, callbackContext);
+      String subject = args.getString(2);
+      String displayName = args.getString(3);
+      this.loadURL(url, key, subject, displayName, callbackContext);
       return true;
     } else if (action.equals("destroy")) {
       this.destroy(callbackContext);
